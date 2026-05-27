@@ -10,28 +10,35 @@
    Example:
      const products = await fetch('/api/products').then(r => r.json());
    Each product object shape must match this schema.
+
+   IMAGE CONVENTION:
+   - All product images live in the `assets/products/` folder.
+   - The `image` field is the filename only (e.g. 'ts-sunrise.jpg').
+   - Full path resolved in renderProducts() as: `assets/products/${p.image}`
+   - If an image is missing, the `art` CSS class gradient is shown as fallback.
+   - Recommended image size: 800×800px, square crop, JPG or WebP.
 ──────────────────────────────────────────── */
 const products = [
   // T-SHIRTS
-  {id:'ts-001',code:'MO-001',name:'Impression Sunrise Tee',type:'tshirt',price:1290,stock:15,art:'art-sunrise',emoji:'🌅',desc:'Screen-printed on 220gsm cotton'},
-  {id:'ts-002',code:'MO-002',name:'Water Lilies Tee',type:'tshirt',price:1290,stock:10,art:'art-waterlily',emoji:'💧',desc:'Heavyweight jersey, unisex cut'},
-  {id:'ts-003',code:'DE-001',name:'Ballet Tee',type:'tshirt',price:1390,stock:8,art:'art-ballet',emoji:'🎀',desc:'Organic cotton, oversized fit'},
-  {id:'ts-004',code:'RE-001',name:'Regatta Tee',type:'tshirt',price:1290,stock:0,art:'art-boating',emoji:'⛵',desc:'Premium ring-spun cotton'},
+  {id:'ts-001',code:'MO-001',name:'Impression Sunrise Tee',type:'tshirt',price:1290,stock:15,art:'art-sunrise',emoji:'🌅',image:'ts-sunrise.jpg',desc:'Screen-printed on 220gsm cotton'},
+  {id:'ts-002',code:'MO-002',name:'Water Lilies Tee',type:'tshirt',price:1290,stock:10,art:'art-waterlily',emoji:'💧',image:'ts-waterlily.jpg',desc:'Heavyweight jersey, unisex cut'},
+  {id:'ts-003',code:'DE-001',name:'Ballet Tee',type:'tshirt',price:1390,stock:8,art:'art-ballet',emoji:'🎀',image:'ts-ballet.jpg',desc:'Organic cotton, oversized fit'},
+  {id:'ts-004',code:'RE-001',name:'Regatta Tee',type:'tshirt',price:1290,stock:0,art:'art-boating',emoji:'⛵',image:'ts-regatta.jpg',desc:'Premium ring-spun cotton'},
   // ENAMEL PINS
-  {id:'pn-001',code:'MO-003',name:'Waterlily Pin',type:'pin',price:550,stock:30,art:'art-waterlily',emoji:'💧',desc:'Hard enamel, gold plating'},
-  {id:'pn-002',code:'MO-004',name:'Sunrise Pin',type:'pin',price:550,stock:22,art:'art-sunrise',emoji:'🌅',desc:'1.5" cloisonné enamel'},
-  {id:'pn-003',code:'DE-002',name:'Ballet Pin',type:'pin',price:500,stock:18,art:'art-ballet',emoji:'🎀',desc:'Soft enamel, rubber clasp'},
-  {id:'pn-004',code:'PI-001',name:'Parasol Pin',type:'pin',price:500,stock:14,art:'art-parasol',emoji:'☂️',desc:'Hard enamel, silver plating'},
+  {id:'pn-001',code:'MO-003',name:'Waterlily Pin',type:'pin',price:550,stock:30,art:'art-waterlily',emoji:'💧',image:'pn-waterlily.jpg',desc:'Hard enamel, gold plating'},
+  {id:'pn-002',code:'MO-004',name:'Sunrise Pin',type:'pin',price:550,stock:22,art:'art-sunrise',emoji:'🌅',image:'pn-sunrise.jpg',desc:'1.5" cloisonné enamel'},
+  {id:'pn-003',code:'DE-002',name:'Ballet Pin',type:'pin',price:500,stock:18,art:'art-ballet',emoji:'🎀',image:'pn-ballet.jpg',desc:'Soft enamel, rubber clasp'},
+  {id:'pn-004',code:'PI-001',name:'Parasol Pin',type:'pin',price:500,stock:14,art:'art-parasol',emoji:'☂️',image:'pn-parasol.jpg',desc:'Hard enamel, silver plating'},
   // STICKERS
-  {id:'st-001',code:'MO-005',name:'Garden Sticker Pack',type:'sticker',price:290,stock:50,art:'art-garden',emoji:'🌷',desc:'Holo vinyl, 4-pack'},
-  {id:'st-002',code:'CA-001',name:'Cathedral Sticker',type:'sticker',price:290,stock:40,art:'art-rouen',emoji:'⛪',desc:'Matte archival vinyl'},
-  {id:'st-003',code:'PI-002',name:'Boulevard Sticker',type:'sticker',price:250,stock:60,art:'art-boulevard',emoji:'🌃',desc:'Clear vinyl, waterproof'},
-  {id:'st-004',code:'MO-006',name:'Bridge Sticker Pack',type:'sticker',price:290,stock:0,art:'art-bridge',emoji:'🌉',desc:'Foil-finish vinyl pack'},
+  {id:'st-001',code:'MO-005',name:'Garden Sticker Pack',type:'sticker',price:290,stock:50,art:'art-garden',emoji:'🌷',image:'st-garden.jpg',desc:'Holo vinyl, 4-pack'},
+  {id:'st-002',code:'CA-001',name:'Cathedral Sticker',type:'sticker',price:290,stock:40,art:'art-rouen',emoji:'⛪',image:'st-cathedral.jpg',desc:'Matte archival vinyl'},
+  {id:'st-003',code:'PI-002',name:'Boulevard Sticker',type:'sticker',price:250,stock:60,art:'art-boulevard',emoji:'🌃',image:'st-boulevard.jpg',desc:'Clear vinyl, waterproof'},
+  {id:'st-004',code:'MO-006',name:'Bridge Sticker Pack',type:'sticker',price:290,stock:0,art:'art-bridge',emoji:'🌉',image:'st-bridge.jpg',desc:'Foil-finish vinyl pack'},
   // ART CARDS
-  {id:'ac-001',code:'DE-003',name:'Ballet Art Card',type:'artcard',price:750,stock:20,art:'art-ballet',emoji:'🩰',desc:'Letterpress on cotton rag'},
-  {id:'ac-002',code:'MO-007',name:'Haystacks Art Card',type:'artcard',price:750,stock:15,art:'art-haystacks',emoji:'🌾',desc:'Giclée, numbered edition'},
-  {id:'ac-003',code:'RE-002',name:'Parasol Art Card',type:'artcard',price:700,stock:10,art:'art-parasol',emoji:'☂️',desc:'Silkscreen, 5-colour print'},
-  {id:'ac-004',code:'IR-001',name:'Iris Art Card',type:'artcard',price:700,stock:7,art:'art-iris',emoji:'🌸',desc:'Risograph, hand-signed'},
+  {id:'ac-001',code:'DE-003',name:'Ballet Art Card',type:'artcard',price:750,stock:20,art:'art-ballet',emoji:'🩰',image:'ac-ballet.jpg',desc:'Letterpress on cotton rag'},
+  {id:'ac-002',code:'MO-007',name:'Haystacks Art Card',type:'artcard',price:750,stock:15,art:'art-haystacks',emoji:'🌾',image:'ac-haystacks.jpg',desc:'Giclée, numbered edition'},
+  {id:'ac-003',code:'RE-002',name:'Parasol Art Card',type:'artcard',price:700,stock:10,art:'art-parasol',emoji:'☂️',image:'ac-parasol.jpg',desc:'Silkscreen, 5-colour print'},
+  {id:'ac-004',code:'IR-001',name:'Iris Art Card',type:'artcard',price:700,stock:7,art:'art-iris',emoji:'🌸',image:'ac-iris.jpg',desc:'Risograph, hand-signed'},
 ];
 
 const typeLabel    = {tshirt:'T-Shirt',pin:'Enamel Pin',sticker:'Sticker',artcard:'Art Card'};
@@ -50,9 +57,15 @@ function renderProducts() {
 
   grid.innerHTML = filtered.map(p => `
     <div class="product-card${p.stock === 0 ? ' out-of-stock' : ''}" id="card-${p.id}">
-      <div class="card-img ${p.art}">
-        <div class="card-img-inner">
-          <span>${p.emoji}</span>
+      <div class="card-img">
+        <div class="card-img-inner ${p.art}">
+          <img
+            src="assets/products/${p.image}"
+            alt="${p.name}"
+            class="card-product-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          >
+          <span class="card-img-fallback" style="display:none">${p.emoji}</span>
         </div>
       </div>
       <div class="card-body">
@@ -145,7 +158,15 @@ function updateCartUI() {
     div.className   = 'cart-item';
     div.id          = `ci-${item.id}`;
     div.innerHTML   = `
-      <div class="cart-item-thumb ${item.art}">${item.emoji}</div>
+      <div class="cart-item-thumb ${item.art}">
+        <img
+          src="assets/products/${item.image}"
+          alt="${item.name}"
+          class="cart-thumb-img"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+        >
+        <span class="cart-thumb-fallback" style="display:none">${item.emoji}</span>
+      </div>
       <div class="cart-item-info">
         <div class="cart-item-name">${item.name}</div>
         <div class="cart-item-meta">${typeLabel[item.type]} · ${item.code}</div>
