@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAWAII ATELIER — Art Merch ★</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- TICKER BANNER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="tickerTrack">
+    <span class="tick-item"><span class="tick-icon">✦</span> Kawaii art you can wear</span>
+    <span class="tick-item"><span class="tick-icon">★</span> Ships Philippines-wide</span>
+    <span class="tick-item"><span class="tick-icon">♡</span> 100% indie artist merch</span>
+    <span class="tick-item"><span class="tick-icon">✦</span> GCash · Maya · COD</span>
+    <span class="tick-item"><span class="tick-icon">★</span> Free Shipping over ₱2500</span>
+    <span class="tick-item"><span class="tick-icon">♡</span> Hand-crafted limited editions</span>
+    <!-- Duplicated for seamless loop -->
+    <span class="tick-item"><span class="tick-icon">✦</span> Kawaii art you can wear</span>
+    <span class="tick-item"><span class="tick-icon">★</span> Ships Philippines-wide</span>
+    <span class="tick-item"><span class="tick-icon">♡</span> 100% indie artist merch</span>
+    <span class="tick-item"><span class="tick-icon">✦</span> GCash · Maya · COD</span>
+    <span class="tick-item"><span class="tick-icon">★</span> Free Shipping over ₱2500</span>
+    <span class="tick-item"><span class="tick-icon">♡</span> Hand-crafted limited editions</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <span class="nav-logo">KAWAII<span class="nav-logo-star">★</span>ATELIER</span>
+  <ul class="nav-links">
+    <li><a href="#catalogue">Catalogue</a></li>
+    <li><a href="#about">Studio</a></li>
+    <li><a href="#">Lookbook</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="cart-btn" onclick="toggleCart()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Cart
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- Floating kawaii deco elements -->
+  <div class="deco" style="top:18%;left:6%">✦</div>
+  <div class="deco" style="top:35%;left:44%;font-size:1.1rem;animation-delay:1.2s">★</div>
+  <div class="deco" style="bottom:22%;left:9%;font-size:1.5rem;animation-delay:.7s">♡</div>
+  <div class="deco" style="bottom:30%;left:50%;font-size:.85rem;animation-delay:2s">✦</div>
+
+  <div class="hero-left">
+    <p class="hero-eyebrow">Indie Art Merch · Philippines ★ SS2025</p>
+    <h1 class="hero-title">Wear the <em>Art.</em><br>Own the <span class="hero-title-pop">Kawaii.</span></h1>
+    <p class="hero-body">Limited edition tees, collectible enamel pins, sticker packs &amp; art cards — all handcrafted by independent Filipino artists. Each piece carries a fragment of light.</p>
+    <div class="hero-ctas">
+      <a href="#catalogue" class="btn-primary">View Catalogue</a>
+      <a href="#about" class="btn-ghost">Our Story</a>
+    </div>
+    <div class="hero-pills">
+      <span class="pill">✦ GCash · Maya · COD</span>
+      <span class="pill">★ Free Ship ₱2500+</span>
+      <span class="pill">♡ Ltd. Edition</span>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">48</div>
+        <div class="hero-stat-label">Works</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">12</div>
+        <div class="hero-stat-label">Artists</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">Ltd.</div>
+        <div class="hero-stat-label">Edition</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-grid-cell">
+      <div class="art-placeholder h1"><span class="art-emoji">🌅</span><span class="art-text">IMPRESSION_SUNRISE</span></div>
+      <div class="art-label-overlay"><span>MO-001</span><span>1872</span></div>
+    </div>
+    <div class="hero-grid-cell">
+      <div class="art-placeholder h2"><span class="art-emoji">💧</span><span class="art-text">WATER_LILIES</span></div>
+      <div class="art-label-overlay"><span>MO-008</span><span>1906</span></div>
+    </div>
+    <div class="hero-grid-cell">
+      <div class="art-placeholder h3"><span class="art-emoji">⛵</span><span class="art-text">BOATING_PARTY</span></div>
+      <div class="art-label-overlay"><span>RE-006</span><span>1881</span></div>
+    </div>
+    <div class="hero-grid-cell">
+      <div class="art-placeholder h4"><span class="art-emoji">🎀</span><span class="art-text">THE_DANCE_CLASS</span></div>
+      <div class="art-label-overlay"><span>DE-004</span><span>1874</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CATALOGUE -->
+<section class="catalogue" id="catalogue">
+  <div class="section-header">
+    <div>
+      <p class="section-meta">Selected Works — Merch Collection</p>
+      <h2 class="section-title">Gallery <em>Catalogue</em></h2>
+    </div>
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" onclick="filterProducts('all',this)">All ✦</button>
+      <button class="filter-btn" onclick="filterProducts('tshirt',this)">T-Shirts</button>
+      <button class="filter-btn" onclick="filterProducts('pin',this)">Pins</button>
+      <button class="filter-btn" onclick="filterProducts('sticker',this)">Stickers</button>
+      <button class="filter-btn" onclick="filterProducts('artcard',this)">Art Cards</button>
+    </div>
+  </div>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="about-section">
+  <div class="about-inner">
+    <p class="section-meta">About the Studio</p>
+    <h2 class="section-title">Art that lives <em>beyond the frame</em> ★</h2>
+    <p class="about-body">KAWAII ATELIER is an independent art merch studio translating the masters of Impressionism into wearable, collectible forms — with a kawaii twist. Every tee is screen-printed on heavyweight cotton. Every pin is hard enamel. Every sticker is archival-quality. Every art card is letterpress-printed on cotton rag.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">KAWAII★ATELIER</div>
+      <p class="footer-tagline">Independent art merch for the art lovers of the Philippines. Limited editions only.</p>
+    </div>
+    <div>
+      <p class="footer-col-title">Shop</p>
+      <ul class="footer-links">
+        <li><a href="#catalogue">All Products</a></li>
+        <li><a href="#">T-Shirts</a></li>
+        <li><a href="#">Enamel Pins</a></li>
+        <li><a href="#">Stickers</a></li>
+        <li><a href="#">Art Cards</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Info</p>
+      <ul class="footer-links">
+        <li><a href="#about">Our Studio</a></li>
+        <li><a href="#">Shipping Info</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Connect</p>
+      <ul class="footer-links">
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">TikTok</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">contact@kawaiiatelier.ph</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Kawaii Atelier · Cagayan de Oro, PH</span>
+    <span>Made with ♡ by independent artists</span>
+  </div>
+</footer>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <span class="cart-title">Your Cart ★</span>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">
+      <div class="cart-empty-icon">🛒</div>
+      <p>Your cart is empty</p>
+    </div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-subtotal">
+      <span class="cart-subtotal-label">Total</span>
+      <span class="cart-subtotal-val" id="cartTotal">₱0.00</span>
+    </div>
+    <p class="cart-note">Shipping calculated at checkout · GCash · Maya · COD accepted</p>
+    <button class="checkout-btn" onclick="openCheckout()">Checkout ✦</button>
+  </div>
+</aside>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Checkout ★</span>
+      <button class="modal-close" onclick="closeCheckout()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="step-tabs">
+        <button class="step-tab active" onclick="goStep(1)">01 · Address</button>
+        <button class="step-tab" onclick="goStep(2)">02 · Payment</button>
+        <button class="step-tab" onclick="goStep(3)">03 · Review</button>
+      </div>
+      <div id="checkoutForm">
+        <!-- Step 1: Address -->
+        <div class="form-section active" id="step1">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name *</label>
+              <input type="text" id="fname" placeholder="Maria">
+            </div>
+            <div class="form-group">
+              <label>Last Name *</label>
+              <input type="text" id="lname" placeholder="Santos">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" id="email" placeholder="maria@example.com">
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="phone" placeholder="09XX XXX XXXX">
+          </div>
+          <div class="form-group">
+            <label>Street Address</label>
+            <input type="text" id="addr1" placeholder="123 Rizal St., Brgy. Poblacion">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>City / Municipality</label>
+              <input type="text" id="city" placeholder="Cagayan de Oro">
+            </div>
+            <div class="form-group">
+              <label>Province</label>
+              <input type="text" id="province" placeholder="Misamis Oriental">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-form-next" onclick="goStep(2)">Continue to Payment ✦</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Payment -->
+        <div class="form-section" id="step2">
+          <div class="form-group">
+            <label>Payment Method</label>
+            <select id="paymethod">
+              <option>GCash</option>
+              <option>Maya</option>
+              <option>Cash on Delivery (COD)</option>
+              <option>Credit / Debit Card</option>
+            </select>
+          </div>
+          <div class="form-divider">
+            <div class="form-divider-line"></div>
+            <span class="form-divider-text">Card Details (if applicable)</span>
+            <div class="form-divider-line"></div>
+          </div>
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" id="cardnum" placeholder="0000 0000 0000 0000" oninput="formatCard(this)" maxlength="19">
+          </div>
+          <div class="card-inputs">
+            <div class="form-group">
+              <label>Expiry</label>
+              <input type="text" id="expiry" placeholder="MM / YY" oninput="formatExpiry(this)" maxlength="7">
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input type="text" id="cvv" placeholder="123" maxlength="4">
+            </div>
+          </div>
+          <div class="secure-note">🔒 Secured checkout · Your data is safe</div>
+          <div class="form-actions">
+            <button class="btn-form-back" onclick="goStep(1)">← Back</button>
+            <button class="btn-form-next" onclick="goStep(3)">Review Order ✦</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Review -->
+        <div class="form-section" id="step3">
+          <div class="order-summary">
+            <div id="reviewItems"></div>
+            <div class="order-row total">
+              <span>Subtotal</span><span id="reviewSubtotal"></span>
+            </div>
+            <div class="order-row">
+              <span>Shipping</span><span style="font-family:var(--mono)">₱120.00</span>
+            </div>
+            <div class="order-row total" style="font-size:1.05rem">
+              <span>Total</span><span id="reviewTotal"></span>
+            </div>
+          </div>
+          <p class="section-meta" style="margin-bottom:.5rem">Delivering to</p>
+          <p id="reviewAddress" style="font-size:.9rem;color:var(--ink2);margin-bottom:1.5rem;line-height:1.6"></p>
+          <div class="form-actions">
+            <button class="btn-form-back" onclick="goStep(2)">← Back</button>
+            <button class="btn-form-next" onclick="placeOrder()">Place Order ★</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Success View -->
+      <div class="success-view" id="successView">
+        <div class="success-icon">★</div>
+        <h2>Order Confirmed!</h2>
+        <p id="orderNum" class="order-num"></p>
+        <p>Thank you! Your kawaii merch is on its way. We'll send a confirmation to your email shortly.</p>
+        <button class="btn-primary" onclick="resetOrder()">Continue Shopping ✦</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
