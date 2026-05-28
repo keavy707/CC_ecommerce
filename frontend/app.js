@@ -4,42 +4,20 @@
    checkout, helpers, animations
    ══════════════════════════════════════════ */
 
-/* ─── PRODUCT DATA ───────────────────────────
-   NOTE: When connecting to a database, replace
-   this array with an API fetch call.
-   Example:
-     const products = await fetch('/api/products').then(r => r.json());
-   Each product object shape must match this schema.
+const API_BASE = 'http://localhost:8000';
+let products = [];
 
-   IMAGE CONVENTION:
-   - All product images live in the `assets/products/` folder.
-   - The `image` field is the filename only (e.g. 'ts-sunrise.jpg').
-   - Full path resolved in renderProducts() as: `assets/products/${p.image}`
-   - If an image is missing, the `art` CSS class gradient is shown as fallback.
-   - Recommended image size: 800×800px, square crop, JPG or WebP.
-──────────────────────────────────────────── */
-const products = [
-  // T-SHIRTS
-  {id:'ts-001',code:'MO-001',name:'Impression Sunrise Tee',type:'tshirt',price:1290,stock:15,art:'art-sunrise',emoji:'🌅',image:'ts-sunrise.jpg',desc:'Screen-printed on 220gsm cotton'},
-  {id:'ts-002',code:'MO-002',name:'Water Lilies Tee',type:'tshirt',price:1290,stock:10,art:'art-waterlily',emoji:'💧',image:'ts-waterlily.jpg',desc:'Heavyweight jersey, unisex cut'},
-  {id:'ts-003',code:'DE-001',name:'Ballet Tee',type:'tshirt',price:1390,stock:8,art:'art-ballet',emoji:'🎀',image:'ts-ballet.jpg',desc:'Organic cotton, oversized fit'},
-  {id:'ts-004',code:'RE-001',name:'Regatta Tee',type:'tshirt',price:1290,stock:0,art:'art-boating',emoji:'⛵',image:'ts-regatta.jpg',desc:'Premium ring-spun cotton'},
-  // ENAMEL PINS
-  {id:'pn-001',code:'MO-003',name:'Waterlily Pin',type:'pin',price:550,stock:30,art:'art-waterlily',emoji:'💧',image:'pn-waterlily.jpg',desc:'Hard enamel, gold plating'},
-  {id:'pn-002',code:'MO-004',name:'Sunrise Pin',type:'pin',price:550,stock:22,art:'art-sunrise',emoji:'🌅',image:'pn-sunrise.jpg',desc:'1.5" cloisonné enamel'},
-  {id:'pn-003',code:'DE-002',name:'Ballet Pin',type:'pin',price:500,stock:18,art:'art-ballet',emoji:'🎀',image:'pn-ballet.jpg',desc:'Soft enamel, rubber clasp'},
-  {id:'pn-004',code:'PI-001',name:'Parasol Pin',type:'pin',price:500,stock:14,art:'art-parasol',emoji:'☂️',image:'pn-parasol.jpg',desc:'Hard enamel, silver plating'},
-  // STICKERS
-  {id:'st-001',code:'MO-005',name:'Garden Sticker Pack',type:'sticker',price:290,stock:50,art:'art-garden',emoji:'🌷',image:'st-garden.jpg',desc:'Holo vinyl, 4-pack'},
-  {id:'st-002',code:'CA-001',name:'Cathedral Sticker',type:'sticker',price:290,stock:40,art:'art-rouen',emoji:'⛪',image:'st-cathedral.jpg',desc:'Matte archival vinyl'},
-  {id:'st-003',code:'PI-002',name:'Boulevard Sticker',type:'sticker',price:250,stock:60,art:'art-boulevard',emoji:'🌃',image:'st-boulevard.jpg',desc:'Clear vinyl, waterproof'},
-  {id:'st-004',code:'MO-006',name:'Bridge Sticker Pack',type:'sticker',price:290,stock:0,art:'art-bridge',emoji:'🌉',image:'st-bridge.jpg',desc:'Foil-finish vinyl pack'},
-  // ART CARDS
-  {id:'ac-001',code:'DE-003',name:'Ballet Art Card',type:'artcard',price:750,stock:20,art:'art-ballet',emoji:'🩰',image:'ac-ballet.jpg',desc:'Letterpress on cotton rag'},
-  {id:'ac-002',code:'MO-007',name:'Haystacks Art Card',type:'artcard',price:750,stock:15,art:'art-haystacks',emoji:'🌾',image:'ac-haystacks.jpg',desc:'Giclée, numbered edition'},
-  {id:'ac-003',code:'RE-002',name:'Parasol Art Card',type:'artcard',price:700,stock:10,art:'art-parasol',emoji:'☂️',image:'ac-parasol.jpg',desc:'Silkscreen, 5-colour print'},
-  {id:'ac-004',code:'IR-001',name:'Iris Art Card',type:'artcard',price:700,stock:7,art:'art-iris',emoji:'🌸',image:'ac-iris.jpg',desc:'Risograph, hand-signed'},
-];
+async function loadProducts() {
+  try {
+    const res = await fetch(`${API_BASE}/api/products`);
+    products = await res.json();
+    products = products.map(p => ({ ...p, price: parseFloat(p.price) }));
+    renderProducts();
+  } catch (err) {
+    console.error('Failed to load products', err);
+    toast('⚠️ Could not load products from server');
+  }
+}
 
 const typeLabel    = {tshirt:'T-Shirt',pin:'Enamel Pin',sticker:'Sticker',artcard:'Art Card'};
 const typeTagClass = {tshirt:'tag-tshirt',pin:'tag-pin',sticker:'tag-sticker',artcard:'tag-artcard'};
@@ -143,7 +121,6 @@ function updateCartUI() {
 
   totalEl.textContent = `₱${total.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-  // Remove old items
   document.querySelectorAll('.cart-item').forEach(el => el.remove());
 
   if (cart.length === 0) {
@@ -239,33 +216,22 @@ function buildReview() {
   document.getElementById('reviewAddress').textContent = addr || 'No address entered';
 }
 
-function placeOrder() {
-  /* ──────────────────────────────────────────
-     DATABASE HOOK POINT
-     Replace this block with an API call:
+/* ─── PHONE VALIDATION ──────────────────────── */
+function validatePhone(phone) {
+  // Philippine mobile: starts with 09, exactly 11 digits, numbers only
+  const cleaned = phone.replace(/\D/g, '');
+  if (cleaned.length !== 11) return { ok: false, msg: 'Phone must be exactly 11 digits' };
+  if (!cleaned.startsWith('09')) return { ok: false, msg: 'Phone must start with 09 (Philippine mobile)' };
+  return { ok: true, cleaned: cleaned };
+}
 
-     const orderPayload = {
-       items: cart,
-       customer: {
-         name:     fname.value + ' ' + lname.value,
-         email:    email.value,
-         address:  addr1.value,
-         city:     city.value,
-         province: province.value,
-       },
-       paymentMethod: paymethod.value,
-       total: cart.reduce((s,i) => s+(i.price*i.qty), 0) + 120
-     };
-     const res = await fetch('/api/orders', {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify(orderPayload)
-     });
-     const order = await res.json();
-     document.getElementById('orderNum').textContent = `Order #${order.id}`;
-  ────────────────────────────────────────── */
+function formatPhoneInput(el) {
+  let v = el.value.replace(/\D/g, '').slice(0, 11);
+  el.value = v;
+}
 
-  // Basic field validation
+/* ─── PLACE ORDER ──────────────────────────── */
+async function placeOrder() {
   const required = ['fname', 'lname', 'email'];
   let ok = true;
   required.forEach(id => {
@@ -279,13 +245,59 @@ function placeOrder() {
   });
   if (!ok) { toast('⚠️ Please fill all required fields'); return; }
 
-  // Show success
-  document.getElementById('checkoutForm').style.display = 'none';
-  const sv = document.getElementById('successView');
-  sv.classList.add('show');
-  const orderNum = 'KA' + Date.now().toString().slice(-6);
-  document.getElementById('orderNum').textContent = `Order #${orderNum}`;
-  toast('🎉 Order confirmed!');
+  // Phone validation
+  const phoneEl = document.getElementById('phone');
+  const phoneVal = phoneEl?.value?.trim() || '';
+  if (phoneVal) {
+    const phoneCheck = validatePhone(phoneVal);
+    if (!phoneCheck.ok) {
+      phoneEl.style.borderColor = 'var(--pink)';
+      toast('⚠️ ' + phoneCheck.msg);
+      return;
+    }
+    phoneEl.style.borderColor = '';
+    phoneEl.value = phoneCheck.cleaned;
+  }
+
+  // Address validation - must be in Philippines
+  const city = document.getElementById('city')?.value?.trim() || '';
+  const province = document.getElementById('province')?.value?.trim() || '';
+  if (!city && !province) {
+    toast('⚠️ Please enter your city and province');
+    return;
+  }
+
+  const orderPayload = {
+    items: cart.map(i => ({ product_id: i.id, quantity: i.qty, unit_price: i.price })),
+    customer_name: document.getElementById('fname').value + ' ' + document.getElementById('lname').value,
+    customer_email: document.getElementById('email').value,
+    customer_phone: document.getElementById('phone').value,
+    shipping_address: [
+      document.getElementById('addr1').value,
+      document.getElementById('city').value,
+      document.getElementById('province').value,
+      'Philippines'
+    ].filter(Boolean).join(', '),
+    payment_method: document.getElementById('paymethod').value,
+    total_amount: cart.reduce((s, i) => s + (i.price * i.qty), 0) + 120
+  };
+
+  try {
+    const res = await fetch(`${API_BASE}/api/orders/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderPayload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Order failed');
+
+    document.getElementById('checkoutForm').style.display = 'none';
+    document.getElementById('successView').classList.add('show');
+    document.getElementById('orderNum').textContent = `Order #${data.id}`;
+    toast('🎉 Order confirmed!');
+  } catch (err) {
+    toast('⚠️ ' + err.message);
+  }
 }
 
 function resetOrder() {
@@ -319,4 +331,4 @@ function toast(msg) {
 }
 
 /* ─── INIT ──────────────────────────────────── */
-renderProducts();
+loadProducts();
