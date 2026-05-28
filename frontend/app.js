@@ -191,7 +191,16 @@ function goStep(n) {
     if (i + 1 === n)      t.classList.add('active');
     else if (i + 1 < n)   t.classList.add('done');
   });
-  if (n === 3) buildReview();
+  if (n === 2) updateCODAmount();
+  if (n === 3) buildConfirmation();
+}
+
+function updateCODAmount() {
+  const total = cart.reduce((s, i) => s + (i.price * i.qty), 0) + 120;
+  const codEl = document.getElementById('codAmount');
+  if (codEl) {
+    codEl.textContent = total.toLocaleString('en-PH', { minimumFractionDigits: 2 });
+  }
 }
 
 function buildReview() {
@@ -216,9 +225,49 @@ function buildReview() {
   document.getElementById('reviewAddress').textContent = addr || 'No address entered';
 }
 
+function buildConfirmation() {
+  const sub = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+  const ship = 120;
+  const total = sub + ship;
+
+  // Build item list with images
+  const confirmItemsEl = document.getElementById('confirmItems');
+  if (confirmItemsEl) {
+    confirmItemsEl.innerHTML = cart.map(i => `
+      <div class="confirm-item">
+        <div class="confirm-item-thumb ${i.art}">
+          <img src="assets/products/${i.image}" alt="${i.name}" style="width:100%;height:100%;object-fit:cover;border-radius:4px;" onerror="this.style.display='none';this.parentElement.textContent='${i.emoji}'">
+        </div>
+        <div class="confirm-item-info">
+          <div class="confirm-item-name">${i.name}</div>
+          <div class="confirm-item-meta">${typeLabel[i.type]} · Qty: ${i.qty}</div>
+        </div>
+        <div class="confirm-item-price">₱${(i.price * i.qty).toLocaleString('en-PH', { minimumFractionDigits: 2 })}</div>
+      </div>
+    `).join('');
+  }
+
+  // Update totals
+  const confirmSubtotal = document.getElementById('confirmSubtotal');
+  const confirmTotal = document.getElementById('confirmTotal');
+  if (confirmSubtotal) confirmSubtotal.textContent = `₱${sub.toLocaleString('en-PH', { minimumFractionDigits: 2 })}`;
+  if (confirmTotal) confirmTotal.textContent = `₱${total.toLocaleString('en-PH', { minimumFractionDigits: 2 })}`;
+
+  // Update address
+  const addr = [
+    document.getElementById('fname')?.value,
+    document.getElementById('lname')?.value,
+    document.getElementById('addr1')?.value,
+    document.getElementById('city')?.value,
+    document.getElementById('province')?.value,
+    'Philippines'
+  ].filter(Boolean).join(', ');
+  const confirmAddress = document.getElementById('confirmAddress');
+  if (confirmAddress) confirmAddress.textContent = addr || 'No address entered';
+}
+
 /* ─── PHONE VALIDATION ──────────────────────── */
 function validatePhone(phone) {
-  // Philippine mobile: starts with 09, exactly 11 digits, numbers only
   const cleaned = phone.replace(/\D/g, '');
   if (cleaned.length !== 11) return { ok: false, msg: 'Phone must be exactly 11 digits' };
   if (!cleaned.startsWith('09')) return { ok: false, msg: 'Phone must start with 09 (Philippine mobile)' };
@@ -259,7 +308,7 @@ async function placeOrder() {
     phoneEl.value = phoneCheck.cleaned;
   }
 
-  // Address validation - must be in Philippines
+  // Address validation
   const city = document.getElementById('city')?.value?.trim() || '';
   const province = document.getElementById('province')?.value?.trim() || '';
   if (!city && !province) {
