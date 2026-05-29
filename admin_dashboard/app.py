@@ -23,7 +23,7 @@ st.sidebar.markdown("*Admin Panel*")
 
 page = st.sidebar.radio(
     "Navigate",
-    ["Dashboard", "Products", "Orders"],
+    ["Dashboard", "📦 Products", "🛒 Orders"],
 )
 
 # ═══════════════════════════════════════════
