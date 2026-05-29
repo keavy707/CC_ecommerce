@@ -90,7 +90,7 @@ def transform_customers(raw_rows):
                 "last_order": created_at,
             }
         customers[email]["total_orders"] += 1
-        customers[email]["total_spent"] += Decimal(str(row["total_amount"]))
+        customers[email]["total_spent"] += Decimal(str(row["unit_price"])) * row["quantity"]
         if created_at > customers[email]["last_order"]:
             customers[email]["last_order"] = created_at
     return list(customers.values())
