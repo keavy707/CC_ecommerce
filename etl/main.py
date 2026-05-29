@@ -14,11 +14,11 @@ def run_etl():
     print("KAWAII ATELIER — ETL Pipeline")
     print("=" * 50)
 
-    # Step 1: Ensure schema exists
+    #  Ensure schema exists
     print("[1/6] Ensuring reporting schema...")
     ensure_schema()
 
-    # Step 2: Get last run timestamp
+    #  Get last run timestamp
     print("[2/6] Checking last ETL run...")
     last_run = get_last_etl_run()
     if last_run:
@@ -26,7 +26,7 @@ def run_etl():
     else:
         print("      No previous run found — full load")
 
-    # Step 3: Extract
+    #  Extract
     print("[3/6] Extracting data from main DB...")
     raw_orders = extract_new_orders(last_run)
     print(f"      Found {len(raw_orders)} order items")
@@ -39,7 +39,7 @@ def run_etl():
     raw_products = extract_all_products()
     print(f"      Found {len(raw_products)} products")
 
-    # Step 4: Transform
+    #  Transform
     print("[4/6] Transforming data...")
     sales_facts = transform_sales(raw_orders)
     product_dims = transform_products(raw_products)
@@ -60,7 +60,7 @@ def run_etl():
     print(f"      Date dimensions: {len(date_dims)}")
     print(f"      Customer dimensions: {len(customer_dims)}")
 
-    # Step 5: Load
+    # Load
     print("[5/6] Loading into reporting DB...")
     load_products(product_dims)
     load_dates(date_dims)
@@ -68,7 +68,7 @@ def run_etl():
     load_customers(customer_dims)
     print("      Load complete")
 
-    # Step 6: Log
+    # Log
     print("[6/6] Logging ETL run...")
     last_order_time = max(s["created_at"] for s in sales_facts)
     log_etl_run(len(sales_facts), last_order_time, "success")

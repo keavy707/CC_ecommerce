@@ -23,13 +23,13 @@ st.sidebar.markdown("*Admin Panel*")
 
 page = st.sidebar.radio(
     "Navigate",
-    ["📊 Dashboard", "📦 Products", "🛒 Orders"],
+    ["Dashboard", "Products", "Orders"],
 )
 
 # ═══════════════════════════════════════════
 # PAGE 1: DASHBOARD (Analytics)
 # ═══════════════════════════════════════════
-if page == "📊 Dashboard":
+if page == "Dashboard":
     st.markdown("""
         <div style="text-align:center; padding: 1rem 0;">
             <h1 style="font-family: 'Fredoka One', cursive; color: #ff4d8f;">
@@ -47,19 +47,19 @@ if page == "📊 Dashboard":
         with rep_engine.connect() as conn:
             result = conn.execute(text("SELECT COALESCE(SUM(revenue), 0) FROM fact_sales"))
             revenue = result.scalar()
-        st.metric("💰 Total Revenue", f"₱{float(revenue):,.2f}")
+        st.metric("Total Revenue", f"₱{float(revenue):,.2f}")
     
     with col2:
         with rep_engine.connect() as conn:
             result = conn.execute(text("SELECT COUNT(DISTINCT order_id) FROM fact_sales"))
             orders = result.scalar()
-        st.metric("📦 Total Orders", f"{orders}")
+        st.metric("Total Orders", f"{orders}")
     
     with col3:
         with rep_engine.connect() as conn:
             result = conn.execute(text("SELECT COALESCE(SUM(quantity), 0) FROM fact_sales"))
             products = result.scalar()
-        st.metric("🎨 Products Sold", f"{products}")
+        st.metric("Products Sold", f"{products}")
     
     with col4:
         with rep_engine.connect() as conn:
@@ -73,7 +73,7 @@ if page == "📊 Dashboard":
     left_col, right_col = st.columns(2)
     
     with left_col:
-        st.subheader("📈 Sales Trend (Monthly)")
+        st.subheader("Sales Trend (Monthly)")
         with rep_engine.connect() as conn:
             result = conn.execute(text("""
                 SELECT d.year, d.month, d.month_name, SUM(f.revenue) as revenue
@@ -95,7 +95,7 @@ if page == "📊 Dashboard":
             st.info("No sales data yet.")
     
     with right_col:
-        st.subheader("🥧 Sales by Product Type")
+        st.subheader("Sales by Product Type")
         with rep_engine.connect() as conn:
             result = conn.execute(text("""
                 SELECT p.type, SUM(f.revenue) as revenue
@@ -117,7 +117,7 @@ if page == "📊 Dashboard":
     st.divider()
     
     # Top Products
-    st.subheader("🏆 Top Products")
+    st.subheader("Top Products")
     with rep_engine.connect() as conn:
         result = conn.execute(text("""
             SELECT p.name, p.type, SUM(f.quantity) as qty, SUM(f.revenue) as revenue
@@ -182,7 +182,7 @@ elif page == "📦 Products":
     st.divider()
     
     # Edit Product
-    st.subheader("✏️ Edit Product")
+    st.subheader("Edit Product")
     product_ids = [p["id"] for p in products]
     selected_id = st.selectbox("Select Product", product_ids)
     
@@ -200,7 +200,7 @@ elif page == "📦 Products":
                 type_ = st.selectbox("Type", ["tshirt", "pin", "sticker", "artcard"], index=["tshirt", "pin", "sticker", "artcard"].index(selected_product["type"]))
                 description = st.text_area("Description", selected_product.get("description", ""))
             
-            submitted = st.form_submit_button("💾 Save Changes")
+            submitted = st.form_submit_button("Save Changes")
             if submitted:
                 with main_engine.connect() as conn:
                     conn.execute(text("""
@@ -255,7 +255,7 @@ elif page == "🛒 Orders":
     st.markdown("""
         <div style="text-align:center; padding: 1rem 0;">
             <h1 style="font-family: 'Fredoka One', cursive; color: #ff4d8f;">
-                🛒 Order Management
+                Order Management
             </h1>
         </div>
     """, unsafe_allow_html=True)
@@ -298,7 +298,7 @@ elif page == "🛒 Orders":
     st.divider()
     
     # Order Details
-    st.subheader("📋 Order Details")
+    st.subheader("Order Details")
     if selected_order:
         with main_engine.connect() as conn:
             # Order info
