@@ -143,7 +143,7 @@ function updateCartUI() {
     div.innerHTML   = `
       <div class="cart-item-thumb ${item.art}">
         <img
-          src="assets/products/${item.image}"
+          src="assets/${item.image}"
           alt="${item.name}"
           class="cart-thumb-img"
           onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
@@ -209,28 +209,6 @@ function updateCODAmount() {
   }
 }
 
-function buildReview() {
-  const sub = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-  const ship = 120;
-  document.getElementById('reviewSubtotal').textContent = `₱${sub.toLocaleString('en-PH', { minimumFractionDigits: 2 })}`;
-  document.getElementById('reviewTotal').textContent    = `₱${(sub + ship).toLocaleString('en-PH', { minimumFractionDigits: 2 })}`;
-  document.getElementById('reviewItems').innerHTML      = cart.map(i => `
-    <div class="order-row">
-      <span>${i.emoji} ${i.name} × ${i.qty}</span>
-      <span style="font-family:var(--mono)">₱${(i.price * i.qty).toLocaleString('en-PH', { minimumFractionDigits: 2 })}</span>
-    </div>
-  `).join('');
-
-  const addr = [
-    document.getElementById('fname')?.value,
-    document.getElementById('lname')?.value + ',',
-    document.getElementById('addr1')?.value + ',',
-    document.getElementById('city')?.value + ',',
-    document.getElementById('province')?.value
-  ].filter(x => x && x !== ',').join(' ');
-  document.getElementById('reviewAddress').textContent = addr || 'No address entered';
-}
-
 function buildConfirmation() {
   const sub = cart.reduce((s, i) => s + (i.price * i.qty), 0);
   const ship = 120;
@@ -242,7 +220,7 @@ function buildConfirmation() {
     confirmItemsEl.innerHTML = cart.map(i => `
       <div class="confirm-item">
         <div class="confirm-item-thumb ${i.art}">
-          <img src="assets/products/${i.image}" alt="${i.name}" style="width:100%;height:100%;object-fit:cover;border-radius:4px;" onerror="this.style.display='none';this.parentElement.textContent='${i.emoji}'">
+          <img src="assets/${i.image}" alt="${i.name}" style="width:100%;height:100%;object-fit:cover;border-radius:4px;" onerror="this.style.display='none';this.parentElement.textContent='${i.emoji}'">
         </div>
         <div class="confirm-item-info">
           <div class="confirm-item-name">${i.name}</div>
