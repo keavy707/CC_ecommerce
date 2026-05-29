@@ -11,7 +11,13 @@ async function loadProducts() {
   try {
     const res = await fetch(`${API_BASE}/api/products`);
     products = await res.json();
-    products = products.map(p => ({ ...p, price: parseFloat(p.price) }));
+    products = products.map(p => ({ 
+      ...p, 
+      price: parseFloat(p.price),
+      art: p.art_class || 'art-sunrise',
+      desc: p.description || '',
+      image: p.image
+    }));
     renderProducts();
   } catch (err) {
     console.error('Failed to load products', err);
@@ -38,7 +44,7 @@ function renderProducts() {
       <div class="card-img">
         <div class="card-img-inner ${p.art}">
           <img
-            src="assets/products/${p.image}"
+            src="assets/${p.image}"
             alt="${p.name}"
             class="card-product-img"
             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
