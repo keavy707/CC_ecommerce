@@ -88,8 +88,8 @@ if page == "📊 Dashboard":
             df = pd.DataFrame(sales_data)
             df["period"] = df["month_name"] + " " + df["year"].astype(str)
             fig = px.line(df, x="period", y="revenue", markers=True,
-                         labels={"revenue": "Revenue (₱)", "period": "Month"},
-                         color_discrete_sequence=["#ff4d8f"])
+                        labels={"revenue": "Revenue (₱)", "period": "Month"},
+                        color_discrete_sequence=["#ff4d8f"])
             st.plotly_chart(fig, use_container_width=True)
         else:
             st.info("No sales data yet.")
